@@ -1,0 +1,28 @@
+## Beginning of program.
+
+## Import data and take it out for a spin
+
+epc <- read.table(file.choose(),header=TRUE,sep=";",colClasses=c("character", "character", rep("numeric",7)),na="?")
+attach(epc)
+str(epc)
+head(epc,10)
+
+## Change dates and times as recommended 
+
+epc$Time <- strptime(paste(epc$Date, epc$Time), "%d/%m/%Y %H:%M:%S")
+epc$Date <- as.Date(epc$Date, "%d/%m/%Y")
+str(epc)
+
+## Only use the household data between the dates 2007-02-01 and 2007-02-02.
+
+Dates2 <- as.Date(c("2007-02-01", "2007-02-02"), "%Y-%m-%d")
+epc2 <- subset(epc, Date %in% Dates2)
+head(epc2,10)
+
+## Creating Plot1
+
+png("plot1.png", width=400, height=400)
+hist(epc2$Global_active_power,main="Global Active Power",xlab="Global Active Power (kilowatts)",ylab="Frequency",col="red")
+dev.off()
+
+## End of program.
